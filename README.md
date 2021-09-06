@@ -5,16 +5,16 @@ Implements PWM control of RGB leds for use with Raspberry Pi GPIO in Node.js
 
 ### Setup
 ```javascript
-var RgbChannel = require('rpi-rgb').Channel;
-var Colour = require('rpi-rgb').Colour;
+const RgbChannel = require('rpi-rgb').Channel;
+const Colour = require('rpi-rgb').Colour;
 
-var channel1 = new RgbChannel(<red_pin>,<green_pin>,<blue_pin>);
+const channel1 = new RgbChannel(<red_pin>,<green_pin>,<blue_pin>);
 ```
 This creates an RGB channel. The pin numbers refer to wiring-pi pin numbers, see http://wiringpi.com/pins for details.
 
 ### The Colour class
 ```javascript
-var myColour = new Colour(<red%>, <green%>, <blue%>);
+const myColour = new Colour(<red%>, <green%>, <blue%>);
 ```
 Colours in rpi-rgb are defined as objects with red, green and blue properties between 0 (off) and 100 (full-on).
 
@@ -43,16 +43,16 @@ Shuts down the PWM channel.
 This example will start by fading in to blue, then strobing for approximately a second. Then it fades to yellow and starts to pulse red.
 
 ```javascript
-var RgbChannel = require('rpi-rgb').Channel;
-var Colour = require('rpi-rgb').Colour;
+const RgbChannel = require('rpi-rgb').Channel;
+const Colour = require('rpi-rgb').Colour;
 
-var channel1 = new RgbChannel(23,21,22);
+const channel1 = new RgbChannel(23,21,22);
 
-var red = new Colour(100,0,0);
-var softRed = new Colour(10,0,0);
-var blue = new Colour(0,100,0);
-var white = new Colour(100,100,100);
-var yellow = new Colour(100,100,0);
+const red = new Colour(100,0,0);
+const softRed = new Colour(10,0,0);
+const blue = new Colour(0,100,0);
+const white = new Colour(100,100,100);
+const yellow = new Colour(100,100,0);
 
 // Start by fading to blue.
 channel1.fadeRgb(blue, 2000, function() {
