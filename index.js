@@ -5,8 +5,8 @@
 module.exports.Channel = Channel;
 module.exports.Colour = Colour;
 
-var gpio = require('wiring-pi');
-var math = require('mathjs');
+const Gpio = require('pigpio').Gpio;
+const math = require('mathjs');
 
 function Colour (red, green, blue) {
   this.red = red;
@@ -22,18 +22,13 @@ Colour.prototype.clamp = function() {
   this.blue = Math.max(0, Math.min(this.blue, 100));
 }
 
-// GPIO is set up to use wiringpi pin numbers.
-// See http://wiringpi.com/pins/ for detailed information.
-// Alternatively you can run 'gpio readall' in bash to see
-// pin information. 
-gpio.setup('wpi');
 
 function Channel(redPin, greenPin, bluePin) {
     
-  this._pinRed = redPin;
-  this._pinGreen = greenPin;
-  this._pinBlue = bluePin;
-  
+  this._pinRed   = new Gpio(redPin, {mode: Gpio.OUTPUT});
+  this._pinGreen = new Gpio(greenPin, {mode: Gpio.OUTPUT});
+  this._pinBlue  = new Gpio(bluePin, {mode: Gpio.OUTPUT});
+ 
   // Current RGB value
   this._valRed = 0;
   this._valGreen = 0;
@@ -51,20 +46,11 @@ function Channel(redPin, greenPin, bluePin) {
   this._fade.dB = 0;
   
   this._timer;
+  //initialize
+  this._pinRed.pwmWrite(this._valRed);
+  this._pinGreen.pwmWrite(this._valGreen);
+  this._pinBlue.pwmWrite(this._valBlue);
   
-  gpio.pinMode(this._pinRed, gpio.OUTPUT);
-  gpio.pinMode(this._pinGreen,gpio.OUTPUT);
-  gpio.pinMode(this._pinBlue, gpio.OUTPUT);
-  
-  if (gpio.softPwmCreate(this._pinRed, 0, 100)) {
-    console.log('Failed to create Red PWM channel on pin ' + this._pinRed);
-  }
-  if (gpio.softPwmCreate(this._pinGreen, 0, 100)) {
-    console.log('Failed to create Green PWM channel on pin ' + this._pinGreen);
-  }
-  if (gpio.softPwmCreate(this._pinBlue, 0, 100)) {
-    console.log('Failed to create Blue PWM channel on pin ' + this._pinBlue);
-  }
 };
     
 Channel.prototype.setRgb = function (colour, callback) {
@@ -75,9 +61,9 @@ Channel.prototype.setRgb = function (colour, callback) {
   this._valGreen = colour.green;
   this._valBlue = colour.blue;
   
-  gpio.softPwmWrite(this._pinRed, math.floor(this._valRed));
-  gpio.softPwmWrite(this._pinGreen, math.floor(this._valGreen));
-  gpio.softPwmWrite(this._pinBlue, math.floor(this._valBlue));
+  this._pinRed.pwmWrite(math.floor(this._valRed));
+  this._pinGreen.pwmWrite(math.floor(this._valGreen));
+  this._pinBlue.pwmWrite(math.floor(this._valBlue));
   
   if (typeof callback === 'function') callback();
   
@@ -148,9 +134,9 @@ Channel.prototype.strobeRgb = function(colour, pulseLength, duration, callback) 
 }
 
 Channel.prototype.close = function () {
-  gpio.softPwmStop(this._pinRed);
-  gpio.softPwmStop(this._pinGreen);
-  gpio.softPwmStop(this._pinBlue);
+  this._pinRed.pwmWrite(0);
+  this._pinGreen.pwmWrite(0);
+  this._pinBlue.pwmWrite(0);
 };
 
 Channel.prototype._updateFade = function (callback) {
@@ -162,9 +148,9 @@ Channel.prototype._updateFade = function (callback) {
   this._valGreen = this._valGreen + fadeInfo.dG;
   this._valBlue = this._valBlue + fadeInfo.dB;
 
-  gpio.softPwmWrite(this._pinRed, math.floor(this._valRed));
-  gpio.softPwmWrite(this._pinGreen, math.floor(this._valGreen));
-  gpio.softPwmWrite(this._pinBlue, math.floor(this._valBlue));
+  this._pinRed.pwmWrite(math.floor(this._valRed));
+  this._pinGreen.pwmWrite(math.floor(this._valGreen));
+  this._pinBlue.pwmWrite(math.floor(this._valBlue));
 
   fadeInfo.stepcount++;
   

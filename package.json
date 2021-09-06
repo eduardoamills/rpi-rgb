@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "wiring-pi": "^2.1.1",
-    "mathjs": "^3.2.1"
+    "mathjs": "^9.4.4",
+    "pigpio": "^3.3.1"
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,6 @@
   },
   "keywords": [
     "raspberrypi",
-    "wiringpi",
     "gpio",
     "led",
     "pwm",
