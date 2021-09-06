@@ -1,20 +1,26 @@
-var RgbChannel = require('./index.js').Channel;
-var Colour = require('./index.js').Colour;
+const RgbChannel = require('rpi-rgb').Channel;
+const Colour = require('rpi-rgb').Colour;
 
-var channel1 = new RgbChannel(23,21,22);
+const channel1 = new RgbChannel(13,5,6);
 
-var red = new Colour(100,0,0);
-var softRed = new Colour(10,0,0);
-var blue = new Colour(0,0,100);
-var white = new Colour(100,100,100);
-var yellow = new Colour(100,100,0);
+const red = new Colour(100,0,0);
+const softRed = new Colour(10,0,0);
+const blue = new Colour(0,0,100);
+const white = new Colour(255,255,255);
+const yellow = new Colour(255,255,0);
 
-channel1.fadeRgb(blue, 2000, function() {
-  
-  channel1.strobeRgb(white, 18, 1000, function() {
-    channel1.fadeRgb(yellow, 700);
+// Start by fading to blue.
+channel1.fadeRgb(blue, 5000, function() {
+  // When that's done, strobe.
+  channel1.strobeRgb(white, 18, 5000, function() {
+    // After strobing, fade to yellow.
+    channel1.fadeRgb(yellow, 5000, function(){
+		channel1.close();
+	});
   });
 });
 
-setTimeout(function(thisobj) { thisobj.pulseRgb(softRed, red, 800, 1500); }, 7000, channel1);
-
+// After the timeout, all the above is likely done, so start pulsing red.
+setTimeout(function(thisobj) {
+	thisobj.pulseRgb(softRed, red, 800, 1500);
+}, 7000, channel1);
