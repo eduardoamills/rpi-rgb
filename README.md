@@ -10,7 +10,6 @@ const Colour = require('rpi-rgb').Colour;
 
 const channel1 = new RgbChannel(<red_pin>,<green_pin>,<blue_pin>);
 ```
-This creates an RGB channel. The pin numbers refer to wiring-pi pin numbers, see http://wiringpi.com/pins for details.
 
 ### The Colour class
 ```javascript
