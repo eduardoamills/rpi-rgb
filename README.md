@@ -1,7 +1,7 @@
 # rpi-rgb
 Implements PWM control of RGB leds for use with Raspberry Pi GPIO in Node.js
 
-This is a fork for Ben \"Steve macAwesome\" Allen project [https://github.com/eduardoamills/rpi-rgb](https://github.com/eduardoamills/rpi-rgb)
+This is a fork for Ben \"Steve macAwesome\" Allen project [https://github.com/SteveMacAwesome/rpi-rgb](https://github.com/SteveMacAwesome/rpi-rgb)
 
 ## How to use
 
