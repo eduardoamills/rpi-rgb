@@ -1,6 +1,8 @@
 # rpi-rgb
 Implements PWM control of RGB leds for use with Raspberry Pi GPIO in Node.js
 
+This is a fork for Ben \"Steve macAwesome\" Allen project [https://github.com/eduardoamills/rpi-rgb](https://github.com/eduardoamills/rpi-rgb)
+
 ## How to use
 
 ### Setup
@@ -45,7 +47,7 @@ This example will start by fading in to blue, then strobing for approximately a 
 const RgbChannel = require('rpi-rgb').Channel;
 const Colour = require('rpi-rgb').Colour;
 
-const channel1 = new RgbChannel(23,21,22);
+const channel1 = new RgbChannel(13,5,6);
 
 const red = new Colour(100,0,0);
 const softRed = new Colour(10,0,0);
